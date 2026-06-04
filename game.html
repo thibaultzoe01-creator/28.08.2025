@@ -800,7 +800,7 @@ function playSfxBuffer(buf, vol, rate, offset, dur){
 
 /* — chargement au premier clic (AudioContext doit être créé après geste) — */
 function loadAllSfx(){
-  var base = 'contextual%20/';
+  var base = 'contextual/';
   loadSfxBuffer(base+'freesound_community-footsteps-stairs-slow-106711.mp3',
     function(b){ footstepBuffer = b; });
   loadSfxBuffer(base+'maxhicks-clothing-smaller-movements-mn-301898.mp3',
@@ -886,7 +886,7 @@ function startRoomAmbient(){
     roomAudio.play().catch(function(){});
     _roomFadeTo(1.0, 5000);
     /* Son de fond supplémentaire */
-    var ambExtra = new Audio('contextual%20/zoethibault_sound-28_05_2026.mp3');
+    var ambExtra = new Audio('contextual/zoethibault_sound-28_05_2026.mp3');
     ambExtra.loop   = true;
     ambExtra.volume = 0;
     ambExtra.play().catch(function(){});
@@ -1091,7 +1091,7 @@ var isFridgeTalking = false;
 /* Son frigo (fichier réel) */
 var fridgeHumAudio = null;
 function startFridgeHum(){
-  fridgeHumAudio = new Audio('contextual%20/freesound_community-034776_fridge-humming-65728.mp3');
+  fridgeHumAudio = new Audio('contextual/freesound_community-034776_fridge-humming-65728.mp3');
   fridgeHumAudio.loop   = true;
   fridgeHumAudio.volume = 0;
   fridgeHumAudio.play().catch(function(){});
@@ -1275,7 +1275,7 @@ function enterMonologue(){
     wrap.style.opacity = '1';
 
     /* ── Audio interview ── */
-    interviewAudio = new Audio('contextual%20/interview%20edgar_3.mp3');
+    interviewAudio = new Audio('contextual/interview%20edgar_3.mp3');
     interviewAudio.volume = 0.88;
     interviewAudio.play().catch(function(){});
     _syncPhraseIdx = -1;
@@ -1408,7 +1408,7 @@ function startSpaghettiText(){
     document.getElementById('mono-exit').classList.add('on');
 
     /* Audio */
-    spaghettiAudio = new Audio('contextual%20/interview%20iman%20good.mp3');
+    spaghettiAudio = new Audio('contextual/interview%20iman%20good.mp3');
     spaghettiAudio.volume = 0.55;
     spaghettiAudio.play().catch(function(){});
     /* Musique pièce en fond — forcer volume audible */
@@ -1505,11 +1505,11 @@ function startNewObjText(){
     wrap.style.opacity = '1';
     document.getElementById('mono-exit').classList.add('on');
     setObjectLabel('newobj');
-    newObjAudio = new Audio('contextual%20/interview%20maman%202mp4.mp3');
+    newObjAudio = new Audio('contextual/interview%20maman%202mp4.mp3');
     newObjAudio.volume = 0.55;
     newObjAudio.play().catch(function(){});
     /* choral en fond */
-    newObjChoralAudio = new Audio('contextual%20/vjgalaxy-laus-deo-omnipotenti-latin-sacred-christian-choral-music-01-523037.mp3');
+    newObjChoralAudio = new Audio('contextual/vjgalaxy-laus-deo-omnipotenti-latin-sacred-christian-choral-music-01-523037.mp3');
     newObjChoralAudio.loop = true;
     newObjChoralAudio.volume = 0;
     newObjChoralAudio.play().catch(function(){});
@@ -1587,7 +1587,7 @@ function startFridgeText(){
     wrap.style.opacity = '1';
 
     /* Audio */
-    fridgeAudio = new Audio('contextual%20/interview%20zoe%20couper%20.mp3');
+    fridgeAudio = new Audio('contextual/interview%20zoe%20couper%20.mp3');
     fridgeAudio.volume = 0.88;
     fridgeAudio.play().catch(function(){});
 
@@ -1811,7 +1811,7 @@ document.getElementById('btn').addEventListener('click', function(e){
   overlay.style.pointerEvents = 'none';
 
   /* Son de porte */
-  var doorAudio = new Audio('contextual%20/dragon-studio-door-opening-454242.mp3');
+  var doorAudio = new Audio('contextual/dragon-studio-door-opening-454242.mp3');
   doorAudio.volume = 0.9;
   doorAudio.play().catch(function(){});
 
