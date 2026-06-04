@@ -1268,6 +1268,14 @@ function enterMonologue(){
   stopRoomAmbient(true); // fondu rapide (0.8 s)
   setTimeout(function(){ startHum(); }, 600);
 
+  /* Pré-débloquer l'audio maintenant (geste utilisateur encore actif) */
+  interviewAudio = new Audio('contextual/interview%20edgar_3.mp3');
+  interviewAudio.volume = 0;
+  interviewAudio.play().then(function(){
+    interviewAudio.pause();
+    interviewAudio.currentTime = 0;
+  }).catch(function(){});
+
   setTimeout(function(){
     if(!isMonologue) return;
     document.getElementById('mono-exit').classList.add('on');
@@ -1275,8 +1283,8 @@ function enterMonologue(){
     wrap.style.opacity = '1';
 
     /* ── Audio interview ── */
-    interviewAudio = new Audio('contextual/interview%20edgar_3.mp3');
     interviewAudio.volume = 0.88;
+    interviewAudio.currentTime = 0;
     interviewAudio.play().catch(function(){});
     _syncPhraseIdx = -1;
 
@@ -1791,18 +1799,7 @@ var resumeEl = document.getElementById('resume');
 var introScreen  = document.getElementById('intro-screen');
 var introText    = document.getElementById('intro-text');
 var introPlayed  = false;
-
-/* Précharger le son de porte via XHR blob */
-var doorBlobURL = null;
-(function(){
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET','contextual/dragon-studio-door-opening-454242.mp3',true);
-  xhr.responseType = 'blob';
-  xhr.onload = function(){ doorBlobURL = URL.createObjectURL(xhr.response); };
-  xhr.send();
-})();
 var introDismissable = false;
-var doorShouldPlay   = false;
 
 function enterGame(){
   introDismissable = false;
@@ -1813,6 +1810,7 @@ function enterGame(){
 
 document.getElementById('btn').addEventListener('click', function(e){
   e.stopPropagation();
+  e.preventDefault();
   if(introPlayed) return;
   introPlayed = true;
 
@@ -1820,6 +1818,10 @@ document.getElementById('btn').addEventListener('click', function(e){
   overlay.style.opacity = '0';
   overlay.style.pointerEvents = 'none';
 
+  /* Son de porte */
+  var doorAudio = new Audio('contextual/dragon-studio-door-opening-454242.mp3');
+  doorAudio.volume = 0.9;
+  doorAudio.play().catch(function(){});
 
   /* Afficher intro screen */
   introScreen.style.display = 'flex';
@@ -1834,9 +1836,8 @@ document.getElementById('btn').addEventListener('click', function(e){
 
 introScreen.addEventListener('click', function(){
   if(!introDismissable) return;
-  doorShouldPlay = true;
   enterGame();
-  controls.lock();
+  controls.lock(); /* appel direct dans le geste utilisateur */
 });
 
 overlay.addEventListener('click', function(){
@@ -1853,14 +1854,6 @@ controls.addEventListener('lock', function(){
   if(!roomAudioCtx && !isMonologue) startRoomAmbient();
   // Charger les sons contextuels (pas, vêtements, casseroles)
   if(!sfxCtx) loadAllSfx();
-  // Son de porte — joué ici car le lock confirme le geste utilisateur
-  if(doorShouldPlay){
-    doorShouldPlay = false;
-    var _doorSrc = doorBlobURL || 'contextual/dragon-studio-door-opening-454242.mp3';
-    var _door = new Audio(_doorSrc);
-    _door.volume = 0.9;
-    _door.play().catch(function(){});
-  }
 });
 controls.addEventListener('unlock', function(){
   cross.classList.remove('on');
@@ -2234,3 +2227,4 @@ window.addEventListener('resize', function(){
 </script>
 </body>
 </html>
+zoe@MacBook-Pro-de-Zoe ~ % 
