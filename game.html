@@ -1,3 +1,5 @@
+Last login: Fri Jun  5 00:53:02 on ttys007
+zoe@MacBook-Pro-de-Zoe ~ % cat /Users/zoe/Desktop/EINDHOVEEN_DEPLOY/game.html 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1268,13 +1270,11 @@ function enterMonologue(){
   stopRoomAmbient(true); // fondu rapide (0.8 s)
   setTimeout(function(){ startHum(); }, 600);
 
-  /* Pré-débloquer l'audio maintenant (geste utilisateur encore actif) */
-  interviewAudio = new Audio('contextual/interview%20edgar_3.mp3');
-  interviewAudio.volume = 0;
-  interviewAudio.play().then(function(){
-    interviewAudio.pause();
-    interviewAudio.currentTime = 0;
-  }).catch(function(){});
+  /* Créer l'audio seulement s'il n'a pas déjà été pré-débloqué dans keydown */
+  if(!interviewAudio){
+    interviewAudio = new Audio('contextual/interview%20edgar_3.mp3');
+    interviewAudio.volume = 0;
+  }
 
   setTimeout(function(){
     if(!isMonologue) return;
@@ -1865,6 +1865,14 @@ var OBJ28B_STEP = 0.005;
 window.addEventListener('keydown', function(e){
   keys[e.code]=true;
   if(e.code==='Space') e.preventDefault();
+
+  /* Pré-débloquer l'audio interview depuis le geste keydown direct
+     (enterMonologue est dans rAF, pas dans un geste — cette ligne corrige l'autoplay) */
+  if(e.code==='KeyE' && controls.isLocked && !interactionLocked && lookingAtMicrowave && !interviewAudio){
+    interviewAudio = new Audio('contextual/interview%20edgar_3.mp3');
+    interviewAudio.volume = 0;
+    interviewAudio.play().then(function(){ interviewAudio.pause(); interviewAudio.currentTime = 0; }).catch(function(){});
+  }
 
 
   /* ── Déplacement spaghetti ── */
